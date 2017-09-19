@@ -48,7 +48,7 @@ Mac下配置Latex环境有很多种方式：
 
 	sudo tlmgr install xxxx
 
-2. 遇到以下问题 Unknown directive ...containerchecksum c59200574a316416a23695c258edf3a32531fbda43ccdc09360ee105c3f07f9fb77df17c4ba4c2ea4f3a5ea6667e064b51e3d8c2fe6c984ba3e71b4e32716955... , please fix it! at /usr/local/texlive/2015basic/tlpkg/TeXLive/TLPOBJ.pm line 210, <$retfh> line 5579.
+2. 遇到以下问题 `Unknown directive ...containerchecksum c59200574a316416a23695c258edf3a32531fbda43ccdc09360ee105c3f07f9fb77df17c4ba4c2ea4f3a5ea6667e064b51e3d8c2fe6c984ba3e71b4e32716955... , please fix it! at /usr/local/texlive/2015basic/tlpkg/TeXLive/TLPOBJ.pm line 210, <$retfh> line 5579.`
 
 	tlmgr option repository ftp://tug.org/historic/systems/texlive/2015/tlnet-final
 

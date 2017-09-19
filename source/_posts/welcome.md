@@ -5,16 +5,9 @@ categories:
 - Blog
 tags:
 - hexo
-keywords:
-- blog
-autoThumbnailImage: false
-thumbnailImagePosition: "bottom"
-thumbnailImage: http://d1u9biwaxjngwg.cloudfront.net/welcome-to-tranquilpeak/city-750.jpg
-coverImage: http://d1u9biwaxjngwg.cloudfront.net/welcome-to-tranquilpeak/city.jpg
-metaAlignment: center
 ---
 
-The blog is hosted on [Github](https://github.com) and based on [hexo](http://hexo.io) with [tranquilpeak](https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak).
+The blog is hosted on [Github](https://github.com) and based on [hexo](http://hexo.io)
 
 <!-- more -->
 
