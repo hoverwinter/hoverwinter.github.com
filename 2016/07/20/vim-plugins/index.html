@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="VIM的配置以及各种插件使用方法">
+<meta name="keywords" content="vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIM">
+<meta property="og:url" content="http://blog.carpela.me/2016/07/20/vim-plugins/index.html">
+<meta property="og:site_name" content="Carpe Diem">
+<meta property="og:description" content="VIM的配置以及各种插件使用方法">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-23T16:41:40.048Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VIM">
+<meta name="twitter:description" content="VIM的配置以及各种插件使用方法">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://blog.carpela.me/2016/07/20/vim-plugins/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>VIM | Carpe Diem</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Carpe Diem</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Ars longa, vita brevis, occasio praeceps, experimentum periculosum, iudicium difficile</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.carpela.me/2016/07/20/vim-plugins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Carpela">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Carpe Diem">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">VIM
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-07-20 00:00:00" itemprop="dateCreated datePublished" datetime="2016-07-20T00:00:00+08:00">2016-07-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 00:41:40" itemprop="dateModified" datetime="2019-05-24T00:41:40+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Editor/" itemprop="url" rel="index"><span itemprop="name">Editor</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Editor/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>VIM的配置以及各种插件使用方法</p>
+<a id="more"></a>
+<h1 id="进一步配置"><a href="#进一步配置" class="headerlink" title="进一步配置"></a>进一步配置</h1><ul>
+<li>Tagbar <a href="https://github.com/majutsushi/tagbar/wiki" target="_blank" rel="noopener">https://github.com/majutsushi/tagbar/wiki</a></li>
+<li>Easymotion <a href="https://github.com/easymotion/vim-easymotion#bidirectional-motions" target="_blank" rel="noopener">https://github.com/easymotion/vim-easymotion#bidirectional-motions</a></li>
+<li>CtrlP <a href="https://github.com/ctrlpvim/ctrlp.vim#once-ctrlp-is-open" target="_blank" rel="noopener">https://github.com/ctrlpvim/ctrlp.vim#once-ctrlp-is-open</a></li>
+<li>YouCompleteMe</li>
+<li>vim-go  :GoInstallBinaries</li>
+</ul>
+<h1 id="目录树-NERDTree"><a href="#目录树-NERDTree" class="headerlink" title="目录树 - NERDTree"></a>目录树 - NERDTree</h1><p><a href="https://github.com/scrooloose/nerdcommenter" target="_blank" rel="noopener">Github</a></p>
+<pre><code>:NERDTree 打开 目录树
+:NERDTreeToggle  打开/关闭 目录树
+</code></pre><p>更多使用,请在打开状态下输入  ?</p>
+<h1 id="快速注释-NERDCommenter"><a href="#快速注释-NERDCommenter" class="headerlink" title="快速注释 - NERDCommenter"></a>快速注释 - NERDCommenter</h1><p><a href="https://github.com/scrooloose/nerdcommenter" target="_blank" rel="noopener">Github</a></p>
+<pre><code>&lt;leader&gt;cc 注释
+&lt;leader&gt;cu 解除注释
+&lt;leader&gt;c&lt;space&gt; 接触/添加注释(智能判断)
+</code></pre><h1 id="历史记录-Gundo"><a href="#历史记录-Gundo" class="headerlink" title="历史记录 - Gundo"></a>历史记录 - Gundo</h1><p><a href="https://github.com/sjl/gundo.vim" target="_blank" rel="noopener">Github</a></p>
+<pre><code>:GundoToggle 打开/关闭窗口
+j/k   上下选择
+p     查看diff
+回车  回滚文件到这个时刻的版本
+
+noremap &lt;leader&gt;h :GundoToggle&lt;CR&gt;
+</code></pre><h1 id="快速跳转-EasyMotion"><a href="#快速跳转-EasyMotion" class="headerlink" title="快速跳转 - EasyMotion"></a>快速跳转 - EasyMotion</h1><p><a href="https://github.com/easymotion/vim-easymotion" target="_blank" rel="noopener">Github</a></p>
+<pre><code>&lt;leader&gt;&lt;leader&gt;w
+&lt;leader&gt;&lt;leader&gt;b
+&lt;leader&gt;&lt;leader&gt;s
+&lt;leader&gt;&lt;leader&gt;f
+
+map &lt;leader&gt;&lt;leader&gt;j &lt;Plug&gt;(easymotion-j)
+map &lt;leader&gt;&lt;leader&gt;k &lt;Plug&gt;(easymotion-k)
+map &lt;Leader&gt;&lt;leader&gt;h &lt;Plug&gt;(easymotion-linebackward)
+map &lt;Leader&gt;&lt;leader&gt;l &lt;Plug&gt;(easymotion-lineforward)
+map &lt;leader&gt;&lt;leader&gt;. &lt;Plug&gt;(easymotion-repeat)
+
+:help easymotion.txt
+https://github.com/haya14busa/incsearch.vim
+# Incsearch
+
+map /  &lt;Plug&gt;(incsearch-forward)
+map ?  &lt;Plug&gt;(incsearch-backward)
+map g/ &lt;Plug&gt;(incsearch-stay)
+</code></pre><h1 id="Incsearch-EasyMotion"><a href="#Incsearch-EasyMotion" class="headerlink" title="Incsearch-EasyMotion"></a>Incsearch-EasyMotion</h1><p><a href="https://github.com/haya14busa/incsearch-easymotion.vim" target="_blank" rel="noopener">Github</a></p>
+<pre><code>map z/ &lt;Plug&gt;(incsearch-easymotion-/)
+map z? &lt;Plug&gt;(incsearch-easymotion-?)
+map zg/ &lt;Plug&gt;(incsearch-easymotion-stay)
+</code></pre><h1 id="大纲导航-Tagbar"><a href="#大纲导航-Tagbar" class="headerlink" title="大纲导航 - Tagbar"></a>大纲导航 - Tagbar</h1><p><a href="https://github.com/majutsushi/tagbar" target="_blank" rel="noopener">Github</a></p>
+<p>安装依赖 Exuberant ctags</p>
+<p>sudo apt-get install ctags</p>
+<p>sudo yum install ctags</p>
+<p>brew install ctags</p>
+<pre><code>:TagbarToggle
+
+nmap &lt;F9&gt; :TagbarToggle&lt;CR&gt;
+</code></pre><p>? 查看帮助</p>
+<h1 id="模糊搜索-Ctrlp"><a href="#模糊搜索-Ctrlp" class="headerlink" title="模糊搜索 - Ctrlp"></a>模糊搜索 - Ctrlp</h1><p>github: 原始kien/ctrlp, 使用的是国人改进版本 ctrlpvim/ctrlp.vim<br><a href="https://github.com/kien/ctrlp.vim" target="_blank" rel="noopener">https://github.com/kien/ctrlp.vim</a><br><a href="https://github.com/ctrlpvim/ctrlp.vim" target="_blank" rel="noopener">https://github.com/ctrlpvim/ctrlp.vim</a></p>
+<p>模糊搜索, 可以搜索文件/buffer/mru/tag等等</p>
+<pre><code>&lt;leader&gt;-f模糊搜索最近打开的文件(MRU)
+&lt;leader&gt;-p模糊搜索当前目录及其子目录下的所有文件
+搜索框出来后, 输入关键字, 然后
+ctrl + j/k 进行上下选择
+ctrl + x 在当前窗口水平分屏打开文件
+ctrl + v 同上, 垂直分屏
+ctrl + t 在tab中打开
+</code></pre><h1 id="模糊搜索-CtrlP-funky"><a href="#模糊搜索-CtrlP-funky" class="headerlink" title="模糊搜索 - CtrlP-funky"></a>模糊搜索 - CtrlP-funky</h1><p>[Github]<a href="https://github.com/tacahiroy/ctrlp-funky" target="_blank" rel="noopener">https://github.com/tacahiroy/ctrlp-funky</a></p>
+<p>模糊搜索当前文件中所有函数</p>
+<pre><code>&lt;leader&gt;fu 进入当前文件的函数列表搜索
+&lt;leader&gt;fU 搜索当前光标下单词对应的函数
+</code></pre><h1 id="solarized-主题"><a href="#solarized-主题" class="headerlink" title="solarized 主题"></a>solarized 主题</h1><p><a href="https://github.com/altercation/vim-colors-solarized" target="_blank" rel="noopener">Github</a></p>
+<h1 id="moloki-主题"><a href="#moloki-主题" class="headerlink" title="moloki 主题"></a>moloki 主题</h1><p><a href="https://github.com/tomasr/molokai" target="_blank" rel="noopener">Github</a></p>
+<h1 id="括号高亮-Rainbow-Parentheses"><a href="#括号高亮-Rainbow-Parentheses" class="headerlink" title="括号高亮 - Rainbow_Parentheses"></a>括号高亮 - Rainbow_Parentheses</h1><p><a href="https://github.com/kien/rainbow_parentheses.vim" target="_blank" rel="noopener">Github</a></p>
+<h1 id="快速执行-QuickRun"><a href="#快速执行-QuickRun" class="headerlink" title="快速执行 - QuickRun"></a>快速执行 - QuickRun</h1><pre><code>映射&lt;leader&gt;r以及F10快捷键
+使用message进行结果展示
+</code></pre><h1 id="语法检查-Syntastic"><a href="#语法检查-Syntastic" class="headerlink" title="语法检查 - Syntastic"></a>语法检查 - Syntastic</h1><p><a href="https://github.com/scrooloose/syntastic" target="_blank" rel="noopener">Github</a></p>
+<p>被动技能, 设置打开时开启, 则打开对应文件的时候, 会自动进行语法检查, 高亮错误位置</p>
+<p>注意, 针对某些具体语言, 指定了checker, 需要对应安装外部依赖, 例如pyflakes/pep8/jshint等等</p>
+<p>主动技能, k-vim中配置绑定了<leader>s 打开错误列表面板</leader></p>
+<pre><code>:Errors 显示错误面板
+:lnext  到下一个错误
+:lprevious 到上一个错误
+</code></pre><h1 id="全局搜索-CtrlSF"><a href="#全局搜索-CtrlSF" class="headerlink" title="全局搜索 - CtrlSF"></a>全局搜索 - CtrlSF</h1><p><a href="https://github.com/dyng/ctrlsf.vim" target="_blank" rel="noopener">Github</a></p>
+<p>Ctrl-Shift-F in sublime text</p>
+<p>Make sure you have ack, ag or pt installed.</p>
+<p>An ack/ag/pt powered code search and view tool, like ack.vim or :vimgrep but together with more context, and let you edit in-place with powerful edit mode.</p>
+<p>:CtrlSF pattern dir </p>
+<p>sudo apt-get install silversearcher-ag<br>sudo apt-get install ack-grep</p>
+<p>ag&gt;ack&gt;grep</p>
+<p>//grep的查找,sed的编辑,awk在其对数据分析并生成报告时,显得尤为强大</p>
+<p>所选的单词上使用 \</p>
+<h1 id="CtrlSpace"><a href="#CtrlSpace" class="headerlink" title="CtrlSpace"></a>CtrlSpace</h1><p>类似 CtrlP<br>tabs / buffers / files management<br>fast fuzzy searching powered by Go<br>workspaces (sessions)<br>bookmarks for your favorite projects </p>
+<p><a href="https://github.com/vim-ctrlspace/vim-ctrlspace" target="_blank" rel="noopener">Github</a></p>
+<p>:CtrlSpace</p>
+<h1 id="NERDTree-Tabs"><a href="#NERDTree-Tabs" class="headerlink" title="NERDTree-Tabs"></a>NERDTree-Tabs</h1><p><a href="https://github.com/jistr/vim-nerdtree-tabs" target="_blank" rel="noopener">Github</a></p>
+<p>:NERDTreeTabsOpen switches NERDTree on for all tabs.</p>
+<p>:NERDTreeTabsClose switches NERDTree off for all tabs.</p>
+<p>:NERDTreeTabsToggle toggles NERDTree on/off for all tabs.</p>
+<p>:NERDTreeTabsFind find currently opened file and select it</p>
+<h1 id="vim-go"><a href="#vim-go" class="headerlink" title="vim-go"></a>vim-go</h1><p>let g:go_bin_path = expand(“~/.gotools”)<br>let g:go_bin_path = “/home/fatih/.mypath” </p>
+<p>:GoInstallBinaries</p>
+<h1 id="UltiSnips-amp-vim-snippets"><a href="#UltiSnips-amp-vim-snippets" class="headerlink" title="UltiSnips &amp; vim-snippets"></a>UltiSnips &amp; vim-snippets</h1><p><tigger><tab></tab></tigger></p>
+<p>tigger如下:</p>
+<p>snippet <tigger> “comments” <flag><br>${1:name}<br>${1/(\w+).*/${1}/}<br>endsnippet</flag></tigger></p>
+<p>可以直接用 shell, 也可以使用 !v 或 !p  嵌入 vimscript 或 python</p>
+<p>${1:default text}</p>
+<p><tab> to next placeholder <s-tab> to previous</s-tab></tab></p>
+<p>1 2….0 stop, complete</p>
+<p>placeholer可以包括镜像和求值,甚至整个其它tab stops<br>嵌套的如果被包含,则 内部的直接忽略</p>
+<p>snippet div</p>
+<p>&lt;div ${1: id=”${2:id}”}${3: class=”${4:class}”}&gt;<br>$0<br><br>endsnippet</p>
+<p>placeholder – tab stop<br>mirror   can use  ${1/foo/bar/g} change all the mirrors</p>
+<p><code></code> 求值,如果错误为空串,并且:messages可以看到或直接显示quickfix</p>
+<p>function</p>
+<p>Filname([{expr}] [, {default text}]<br>$1 to refer filename in expr<br>if expr empty, only filename return, otherwise wrap the filename</p>
+<p>visual</p>
+<p>${visual} v select text <tab> trigger<tab> the all the ${VISUAL} in snippet will be replaced by v selected text.</tab></tab></p>
+<h1 id="trailing-whitespace"><a href="#trailing-whitespace" class="headerlink" title="trailing-whitespace"></a>trailing-whitespace</h1><p><a href="https://github.com/bronson/vim-trailing-whitespace" target="_blank" rel="noopener">Github</a></p>
+<pre><code>&lt;leader&gt;&lt;space&gt; 删除行尾所有空格
+</code></pre><p>显示所有行尾的空格</p>
+<h1 id="Expand-region"><a href="#Expand-region" class="headerlink" title="Expand-region"></a>Expand-region</h1><p><a href="https://github.com/terryma/vim-expand-region" target="_blank" rel="noopener">Github</a></p>
+<pre><code>v 增加选中范围
+V 减少选中范围
+</code></pre><p>#close-tag</p>
+<p>被动 自动补全</p>
+<p>#repeat</p>
+<p><a href="https://github.com/tpope/vim-repeat" target="_blank" rel="noopener">Github</a></p>
+<p>强化 .</p>
+<h1 id="surround"><a href="#surround" class="headerlink" title="surround"></a>surround</h1><p><a href="https://github.com/tpope/vim-surround" target="_blank" rel="noopener">Github</a></p>
+<h1 id="替换-cs”‘"><a href="#替换-cs”‘" class="headerlink" title="替换: cs”‘"></a>替换: cs”‘</h1><p>“Hello world!” -&gt; ‘Hello world!’</p>
+<h1 id="替换-标签-t-tag-cst”"><a href="#替换-标签-t-tag-cst”" class="headerlink" title="替换-标签(t=tag): cst”"></a>替换-标签(t=tag): cst”</h1><p><a>abc</a>  -&gt; “abc”</p>
+<p>cst<html><br><a>abc</a>  -&gt; <html>abc</html></html></p>
+<h1 id="删除-ds”"><a href="#删除-ds”" class="headerlink" title="删除: ds”"></a>删除: ds”</h1><p>“Hello world!” -&gt; Hello world!</p>
+<h1 id="添加-ys-you-surround-ysiw”"><a href="#添加-ys-you-surround-ysiw”" class="headerlink" title="添加(ys=you surround): ysiw”"></a>添加(ys=you surround): ysiw”</h1><p>Hello -&gt; “Hello”</p>
+<h1 id="添加-csw”"><a href="#添加-csw”" class="headerlink" title="添加: csw”"></a>添加: csw”</h1><p>Hello -&gt; “Hello”</p>
+<h1 id="添加-整行-yss”"><a href="#添加-整行-yss”" class="headerlink" title="添加-整行: yss”"></a>添加-整行: yss”</h1><p>Hello world -&gt; “Hello world”</p>
+<h1 id="ySS”"><a href="#ySS”" class="headerlink" title="ySS”"></a>ySS”</h1><p>Hello world -&gt;<br>“<br>    hello world<br>“</p>
+<h1 id="添加-两个词-veeS”"><a href="#添加-两个词-veeS”" class="headerlink" title="添加-两个词: veeS”"></a>添加-两个词: veeS”</h1><p>hello world -&gt; “hello world”</p>
+<h1 id="添加-当前到行尾-ys-”"><a href="#添加-当前到行尾-ys-”" class="headerlink" title="添加-当前到行尾: ys$”"></a>添加-当前到行尾: ys$”</h1><h1 id="左符号-右符号-gt-带不带空格"><a href="#左符号-右符号-gt-带不带空格" class="headerlink" title="左符号/右符号 =&gt; 带不带空格"></a>左符号/右符号 =&gt; 带不带空格</h1><p>cs([<br>(hello) -&gt; [ hello ]</p>
+<p>cs(]<br>(hello) -&gt; [hello]</p>
+<p>这个重复 easyMotion 不支持</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vim/" rel="tag"># vim</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/22/josephus-problem-and-recursion/" rel="next" title="约瑟夫问题：递归的角度">
+                <i class="fa fa-chevron-left"></i> 约瑟夫问题：递归的角度
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/mac-latex/" rel="prev" title="Mac下 Latex 环境配置（含中文）">
+                Mac下 Latex 环境配置（含中文） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <script src="https://utteranc.es/client.js" repo="hoverwinter/hoverwinter.github.com" issue-term="pathname" label="comment" theme="github-light" crossorigin="anonymous" async>
+    </script>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Carpela</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进一步配置"><span class="nav-number">1.</span> <span class="nav-text">进一步配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录树-NERDTree"><span class="nav-number">2.</span> <span class="nav-text">目录树 - NERDTree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速注释-NERDCommenter"><span class="nav-number">3.</span> <span class="nav-text">快速注释 - NERDCommenter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#历史记录-Gundo"><span class="nav-number">4.</span> <span class="nav-text">历史记录 - Gundo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速跳转-EasyMotion"><span class="nav-number">5.</span> <span class="nav-text">快速跳转 - EasyMotion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Incsearch-EasyMotion"><span class="nav-number">6.</span> <span class="nav-text">Incsearch-EasyMotion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大纲导航-Tagbar"><span class="nav-number">7.</span> <span class="nav-text">大纲导航 - Tagbar</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模糊搜索-Ctrlp"><span class="nav-number">8.</span> <span class="nav-text">模糊搜索 - Ctrlp</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模糊搜索-CtrlP-funky"><span class="nav-number">9.</span> <span class="nav-text">模糊搜索 - CtrlP-funky</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#solarized-主题"><span class="nav-number">10.</span> <span class="nav-text">solarized 主题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#moloki-主题"><span class="nav-number">11.</span> <span class="nav-text">moloki 主题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#括号高亮-Rainbow-Parentheses"><span class="nav-number">12.</span> <span class="nav-text">括号高亮 - Rainbow_Parentheses</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速执行-QuickRun"><span class="nav-number">13.</span> <span class="nav-text">快速执行 - QuickRun</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法检查-Syntastic"><span class="nav-number">14.</span> <span class="nav-text">语法检查 - Syntastic</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#全局搜索-CtrlSF"><span class="nav-number">15.</span> <span class="nav-text">全局搜索 - CtrlSF</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CtrlSpace"><span class="nav-number">16.</span> <span class="nav-text">CtrlSpace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NERDTree-Tabs"><span class="nav-number">17.</span> <span class="nav-text">NERDTree-Tabs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vim-go"><span class="nav-number">18.</span> <span class="nav-text">vim-go</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UltiSnips-amp-vim-snippets"><span class="nav-number">19.</span> <span class="nav-text">UltiSnips &amp; vim-snippets</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#trailing-whitespace"><span class="nav-number">20.</span> <span class="nav-text">trailing-whitespace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Expand-region"><span class="nav-number">21.</span> <span class="nav-text">Expand-region</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#surround"><span class="nav-number">22.</span> <span class="nav-text">surround</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#替换-cs”‘"><span class="nav-number">23.</span> <span class="nav-text">替换: cs”‘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#替换-标签-t-tag-cst”"><span class="nav-number">24.</span> <span class="nav-text">替换-标签(t=tag): cst”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除-ds”"><span class="nav-number">25.</span> <span class="nav-text">删除: ds”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加-ys-you-surround-ysiw”"><span class="nav-number">26.</span> <span class="nav-text">添加(ys=you surround): ysiw”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加-csw”"><span class="nav-number">27.</span> <span class="nav-text">添加: csw”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加-整行-yss”"><span class="nav-number">28.</span> <span class="nav-text">添加-整行: yss”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ySS”"><span class="nav-number">29.</span> <span class="nav-text">ySS”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加-两个词-veeS”"><span class="nav-number">30.</span> <span class="nav-text">添加-两个词: veeS”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加-当前到行尾-ys-”"><span class="nav-number">31.</span> <span class="nav-text">添加-当前到行尾: ys$”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#左符号-右符号-gt-带不带空格"><span class="nav-number">32.</span> <span class="nav-text">左符号/右符号 =&gt; 带不带空格</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Carpela</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="作为热门的开源硬件，树莓派的爱好者们乐于拿它做各种新奇的应用，甚至可以拿32个树莓派搭个计算能力强悍的集群。树莓派3开始提供板载Wi-Fi和蓝牙功能，在性能上提升不少。而树莓派的操作系统层出不穷，包括常用的Raspbian，Ubuntu Mate等，本文记录了简洁优雅的ArchLinux-ARM在树莓派上的安装。安装过程基于Linux系统。">
+<meta name="keywords" content="ArchLinux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派3安装ArchLinux">
+<meta property="og:url" content="http://blog.carpela.me/2017/09/18/archlinux-on-rpi3/index.html">
+<meta property="og:site_name" content="Carpe Diem">
+<meta property="og:description" content="作为热门的开源硬件，树莓派的爱好者们乐于拿它做各种新奇的应用，甚至可以拿32个树莓派搭个计算能力强悍的集群。树莓派3开始提供板载Wi-Fi和蓝牙功能，在性能上提升不少。而树莓派的操作系统层出不穷，包括常用的Raspbian，Ubuntu Mate等，本文记录了简洁优雅的ArchLinux-ARM在树莓派上的安装。安装过程基于Linux系统。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-23T16:41:40.046Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="树莓派3安装ArchLinux">
+<meta name="twitter:description" content="作为热门的开源硬件，树莓派的爱好者们乐于拿它做各种新奇的应用，甚至可以拿32个树莓派搭个计算能力强悍的集群。树莓派3开始提供板载Wi-Fi和蓝牙功能，在性能上提升不少。而树莓派的操作系统层出不穷，包括常用的Raspbian，Ubuntu Mate等，本文记录了简洁优雅的ArchLinux-ARM在树莓派上的安装。安装过程基于Linux系统。">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://blog.carpela.me/2017/09/18/archlinux-on-rpi3/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>树莓派3安装ArchLinux | Carpe Diem</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Carpe Diem</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Ars longa, vita brevis, occasio praeceps, experimentum periculosum, iudicium difficile</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.carpela.me/2017/09/18/archlinux-on-rpi3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Carpela">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Carpe Diem">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">树莓派3安装ArchLinux
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-09-18 22:05:27" itemprop="dateCreated datePublished" datetime="2017-09-18T22:05:27+08:00">2017-09-18</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 00:41:40" itemprop="dateModified" datetime="2019-05-24T00:41:40+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/树莓派/" itemprop="url" rel="index"><span itemprop="name">树莓派</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>作为热门的开源硬件，树莓派的爱好者们乐于拿它做各种新奇的应用，甚至可以拿32个树莓派搭个计算能力强悍的集群。树莓派3开始提供板载Wi-Fi和蓝牙功能，在性能上提升不少。而树莓派的操作系统层出不穷，包括常用的Raspbian，Ubuntu Mate等，本文记录了简洁优雅的ArchLinux-ARM在树莓派上的安装。安装过程基于Linux系统。</p>
+<a id="more"></a>
+<h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>可以从国内的各大开源镜像站下载，比如清华、网易的开源镜像站。</p>
+<p><a href="https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/" target="_blank" rel="noopener">Tsinghua Tuna</a>站点下有各种可选的(rpi)镜像。本文使用的是<code>ArchLinuxARM-rpi-3-latest.tar.gz</code>。可以使用如下方式下载:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/ArchLinuxARM-rpi-3-latest.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><p>准备好镜像后，接下需要将SD卡分区。按照官方wiki说明，分区如下：</p>
+<ol>
+<li>一个100M大小的vfat分区，挂载boot</li>
+<li>剩余空间是ext4分区，挂载/</li>
+</ol>
+<p>将SD插入后，找到对应的设备文件<code>/dev/sdX</code>后，使用<code>fdisk /dev/sdX</code>:</p>
+<ol>
+<li><code>o</code> 来清除原来分区表</li>
+<li><code>n</code> 来新建分区，类型选择<code>p</code>，输入<code>1</code>作为设备第一个分区，输入<code>ENTER</code>选择默认开始扇区，<code>+100M</code>表示分区大小100M</li>
+<li>输入<code>t</code>，然后输入<code>c</code>设置分区类型为<code>W95 FAT32 (LBA)</code></li>
+<li><code>n</code> 来新建分区，类型选择<code>p</code>，以后都使用<code>ENTER</code>使用默认值</li>
+<li><code>w</code> 保存分区表</li>
+</ol>
+<p>接下来新建目录挂载FAT、EXT4分区：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkfs.vfat /dev/sdX1</span><br><span class="line">mkfs.ext4 /dev/sdX2</span><br><span class="line">mkdir root</span><br><span class="line">mkdir boot</span><br><span class="line">mount /dev/sdX1 boot</span><br><span class="line">mount /dev/sdX2 root</span><br></pre></td></tr></table></figure>
+<p>注意，vfat需要dos文件系统支持，如 ArchLinux 需要安装<code>dosfstools</code>。</p>
+<h3 id="部署镜像"><a href="#部署镜像" class="headerlink" title="部署镜像"></a>部署镜像</h3><p>将下载的镜像解压，然后将解压后的boot目录拷贝到boot分区。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bsdtar -xpf ArchLinuxARM-rpi-latest.tar.gz -C root</span><br><span class="line">sync</span><br><span class="line">mv root/boot/* boot</span><br><span class="line">umount boot root</span><br></pre></td></tr></table></figure>
+<p>接下来将SD卡插入树莓派接入电源就可以启动了。接下来讲如何连接Wi-Fi，为了安装软件包，需要以太网连接。</p>
+<p>默认的用户是：</p>
+<ul>
+<li>账号 root 密码 root ，该账户无法远程登录</li>
+<li>账号 alarm 密码 alarm</li>
+</ul>
+<p>可以使用<code>Ctrl+Alt+ F1-F7</code>来切换终端，其中<code>F7</code>表示GUI，该系统没有X图形界面，有需要的童鞋请自行安装。</p>
+<h3 id="修改镜像源"><a href="#修改镜像源" class="headerlink" title="修改镜像源"></a>修改镜像源</h3><p>将镜像源修改为国内的，可以加快下载速度，尤其是教育网用户使用教育网镜像站。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/pacman.d/mirrolist</span><br></pre></td></tr></table></figure>
+<p>以清华镜像站为例，添加如下记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo</span><br></pre></td></tr></table></figure>
+<p>注：该文件中越靠前的记录优先级越高。</p>
+<p>使用<code>pacman -Syy</code>更新本地数据库。</p>
+<h3 id="连接Wi-Fi"><a href="#连接Wi-Fi" class="headerlink" title="连接Wi-Fi"></a>连接Wi-Fi</h3><p>现在ArchLinuxARM可以使用了，接下来可以利用板载Wi-Fi。这一部分官方wiki上没有给出，参考ArchLinux的netctl命令，整个过程如下：</p>
+<p>检查驱动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
+<p>可以看到 wlan0 接口。接下来安装一些必要软件包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S wpa_supplicant</span><br></pre></td></tr></table></figure>
+<p>对于一个无线网络，ESSID是网络名称，KEY是Wi-Fi密码。使用<code>wpa_passphrase &lt;ESSID&gt; &lt;KEY&gt;</code>生成256bit PSK，它由KEY和SSID经由标准算法计算而成，这一步是为了避免密码明文存储，生成结果如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">network=&#123;</span><br><span class="line">  ssid="your_essid"</span><br><span class="line">  #psk="passphrase"</span><br><span class="line">  psk=64cf3ced850ecef39197bb7b7b301fc39437a6aa6c6a599d0534b16af578e04a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来新建netctl配置，如 tplink，修改<code>vi /etc/netctl/tplink</code>，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Description=&apos;&lt;YOUR DESCRIPTION&gt;&apos;</span><br><span class="line">Interface=wlan0</span><br><span class="line">Connection=wireless</span><br><span class="line">Security=wpa</span><br><span class="line">IP=dhcp</span><br><span class="line">ESSID=&lt;ESSID&gt;</span><br><span class="line">Key=\&quot;&lt;PSK&gt;</span><br></pre></td></tr></table></figure>
+<p>其中<code>&lt;PSK&gt;</code>就是上面生成的psk。</p>
+<p>开启DHCP服务<code>dhcpcd</code>。</p>
+<p>最后使用 <code>netctl enable tplink</code> 作为系统服务。使用 <code>netctl start tplink</code> 连接Wi-Fi。可以拔掉网线了。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-3" target="_blank" rel="noopener">ArchLinux RPI3</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Netctl" target="_blank" rel="noopener">Netctl</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ArchLinux/" rel="tag"># ArchLinux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/29/scala-on-mac/" rel="next" title="MAC下配置Scala开发环境">
+                <i class="fa fa-chevron-left"></i> MAC下配置Scala开发环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/05/php-extension/" rel="prev" title="php-extension">
+                php-extension <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <script src="https://utteranc.es/client.js" repo="hoverwinter/hoverwinter.github.com" issue-term="pathname" label="comment" theme="github-light" crossorigin="anonymous" async>
+    </script>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Carpela</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载镜像"><span class="nav-number">1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区"><span class="nav-number">2.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署镜像"><span class="nav-number">3.</span> <span class="nav-text">部署镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改镜像源"><span class="nav-number">4.</span> <span class="nav-text">修改镜像源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接Wi-Fi"><span class="nav-number">5.</span> <span class="nav-text">连接Wi-Fi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Carpela</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

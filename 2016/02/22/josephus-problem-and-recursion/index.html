@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="约瑟夫问题(The Josephus Problem)是计算机科学中一个经典问题，编程语言教学中它经常作为练习题。虽然司空见惯，背后却隐藏着玄机。它又如何与进位制转换扯上关系呢？本篇文章从递归的角度来重新解析这个流传近2000年的老问题，并提出一类递推式的快速解法。">
+<meta name="keywords" content="约瑟夫问题,递归">
+<meta property="og:type" content="article">
+<meta property="og:title" content="约瑟夫问题：递归的角度">
+<meta property="og:url" content="http://blog.carpela.me/2016/02/22/josephus-problem-and-recursion/index.html">
+<meta property="og:site_name" content="Carpe Diem">
+<meta property="og:description" content="约瑟夫问题(The Josephus Problem)是计算机科学中一个经典问题，编程语言教学中它经常作为练习题。虽然司空见惯，背后却隐藏着玄机。它又如何与进位制转换扯上关系呢？本篇文章从递归的角度来重新解析这个流传近2000年的老问题，并提出一类递推式的快速解法。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-23T16:41:40.046Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="约瑟夫问题：递归的角度">
+<meta name="twitter:description" content="约瑟夫问题(The Josephus Problem)是计算机科学中一个经典问题，编程语言教学中它经常作为练习题。虽然司空见惯，背后却隐藏着玄机。它又如何与进位制转换扯上关系呢？本篇文章从递归的角度来重新解析这个流传近2000年的老问题，并提出一类递推式的快速解法。">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://blog.carpela.me/2016/02/22/josephus-problem-and-recursion/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>约瑟夫问题：递归的角度 | Carpe Diem</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Carpe Diem</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Ars longa, vita brevis, occasio praeceps, experimentum periculosum, iudicium difficile</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.carpela.me/2016/02/22/josephus-problem-and-recursion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Carpela">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Carpe Diem">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">约瑟夫问题：递归的角度
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-02-22 22:01:26" itemprop="dateCreated datePublished" datetime="2016-02-22T22:01:26+08:00">2016-02-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-05-24 00:41:40" itemprop="dateModified" datetime="2019-05-24T00:41:40+08:00">2019-05-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Computer-Science/" itemprop="url" rel="index"><span itemprop="name">Computer Science</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Computer-Science/Beauty-of-Math/" itemprop="url" rel="index"><span itemprop="name">Beauty of Math</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <!-- TOC -->
+<p>约瑟夫问题(The Josephus Problem)是计算机科学中一个经典问题，编程语言教学中它经常作为练习题。虽然司空见惯，背后却隐藏着玄机。它又如何与进位制转换扯上关系呢？本篇文章从递归的角度来重新解析这个流传近2000年的老问题，并提出一类递推式的快速解法。</p>
+<a id="more"></a>
+<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>经典的约瑟夫问题定义如下：</p>
+<pre><code>有n个人，标号为 1 ~ n，从n开始，每隔一个人死于非命，求幸存者编号J(n)
+</code></pre><p>问题很简洁。它的背景是犹太罗马战争时期，有兴趣者移步。举个简单的例子，假如 n = 10，那么：</p>
+<ul>
+<li>第一轮淘汰：2 4 6 8 10 死于非命，剩下 1 3 5 7 9 开始新的一轮淘汰</li>
+<li>第二轮淘汰：3 7 死于非命，剩下 1 5 9 继续</li>
+<li>第三轮淘汰：1 9 死于非命，剩下 5 </li>
+<li>Game over</li>
+</ul>
+<p>可以发现，每一轮淘汰后（n个人），下一轮实际参与人只有 n/2。它的结果是和 J(n/2) 是同一个人，仅仅标号不同而已，而标号之间存在对应关系。上面的例子是偶数个人，以奇数个人试一试会有同样的发现。</p>
+<h2 id="问题求解"><a href="#问题求解" class="headerlink" title="问题求解"></a>问题求解</h2><p>这个问题的暴力解法是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> *flag;</span><br><span class="line"><span class="keyword">int</span> n;</span><br><span class="line"><span class="comment">// 查找当前元素cur隔一个的活人</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">next</span><span class="params">(<span class="keyword">int</span> cur)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// 跳过所有的死人，得到接下来的活人</span></span><br><span class="line">  <span class="keyword">while</span>(!flag[ ++cur % n]);</span><br><span class="line">  <span class="comment">// 跳过得到活人后面的所有死人，得到隔一个的活人</span></span><br><span class="line">  <span class="keyword">while</span>(!flag[ ++cur % n]);</span><br><span class="line">  <span class="keyword">return</span> cur % n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Please input the number:"</span>);</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">" %d"</span>, &amp;n);</span><br><span class="line">  flag = (<span class="keyword">char</span>*) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*n);</span><br><span class="line">  <span class="comment">// 初始为活</span></span><br><span class="line">  <span class="built_in">memset</span>(flag, <span class="number">1</span>, n);</span><br><span class="line">  <span class="comment">// 死 n－1 个人</span></span><br><span class="line">  <span class="keyword">int</span> dead, cur = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(dead=<span class="number">0</span>; dead &lt; n ; dead++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">int</span> tmp = next(cur);</span><br><span class="line">    flag[tmp] = <span class="number">0</span>;</span><br><span class="line">    cur = tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">free</span>(flag);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"Alive: %d\n"</span>, cur == <span class="number">0</span>? n:cur);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它的思路很简单，使用数组模拟人的死亡，下标为0的元素表示n号对应的人，由于这n个人形成的是环，这样做是可以的。这段代码看注释容易明白。当然还可以使用循环队列来解决问题，这样更直观，但效率相对较低。</p>
+<p>这种解法却没有利用到上面提到的规律，进一步发掘那个规律，J(10)第一轮剩下的五个人相当于J(5)重新编号，而且是 </p>
+<pre><code>J(10)站在同一位置的编号 = J(5)对应的编号*2 - 1
+</code></pre><p>同理 J(5)第一轮剩下的两个人相当于J(2)重新编号：</p>
+<pre><code>J(5)站在同一位置的编号 = J(2)对应的编号*2 + 1
+</code></pre><p>即存在以下递归关系：</p>
+<pre><code>J(1) = 1;
+J(2n) = 2J(n) - 1    n≥1;
+J(2n+1) = 2J(n) + 1    n≥1;
+</code></pre><p>这个递推式按照指数形式缩减n，但是这种形式不便于计算，我们需要找到一种封闭的形式，通常可以看到更多的信息。</p>
+<p>这个解答使用 Common Lisp 描述如下：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">format</span> <span class="literal">t</span> <span class="string">"Please input the number: "</span>)</span><br><span class="line">(<span class="name">setf</span> n (<span class="name">read</span>))</span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> josephus (<span class="name">n</span>)</span><br><span class="line">  (<span class="name">cond</span> ((<span class="name">=</span> n <span class="number">1</span>) <span class="number">1</span>)</span><br><span class="line">    ((<span class="name">=</span> (<span class="name">mod</span> n <span class="number">2</span>) <span class="number">0</span>)</span><br><span class="line">        (<span class="name">-</span> (<span class="name">*</span> <span class="number">2</span> (<span class="name">josephus</span> (<span class="name">/</span> n <span class="number">2</span>))) <span class="number">1</span>))</span><br><span class="line">    (<span class="name">t</span> (<span class="name">+</span> (<span class="name">*</span> <span class="number">2</span> (<span class="name">josephus</span> (<span class="name">/</span> (<span class="name">-</span> n <span class="number">1</span>) <span class="number">2</span>))) <span class="number">1</span>))))</span><br><span class="line"></span><br><span class="line">(<span class="name">format</span> <span class="literal">t</span> <span class="string">"Alive: ~A~%"</span> (<span class="name">josephus</span> n))</span><br></pre></td></tr></table></figure>
+<p>下面这个式子是显而易见的：</p>
+<pre><code>J(2n+1) - J(2n) = 2;
+</code></pre><p>使用这个递推关系或者上面的程序可以得出下面这张表：</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>.</th>
+<th>2</th>
+<th>3</th>
+<th>.</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>.</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+<th>.</th>
+<th>16</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>J(n)</td>
+<td>1</td>
+<td>.</td>
+<td>1</td>
+<td>3</td>
+<td>.</td>
+<td>1</td>
+<td>3</td>
+<td>5</td>
+<td>7</td>
+<td>.</td>
+<td>1</td>
+<td>3</td>
+<td>5</td>
+<td>7</td>
+<td>9</td>
+<td>11</td>
+<td>13</td>
+<td>15</td>
+<td>.</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>尤里卡！按照上面的分组，每一组的J(n)都是从1开始，依次递增2。可以用以下的形式改写上述递推式：</p>
+<pre><code>J(2^m + l) = 2l + 1;
+</code></pre><p>其中 2^m + l = n，2^m 是不超过n的2的最大次幂，l是余下的数。这个结论使用数学归纳法很容易证明。有了这个式子，无需递归就可以线性时间解决这个问题。</p>
+<h2 id="递推式与进位制"><a href="#递推式与进位制" class="headerlink" title="递推式与进位制"></a>递推式与进位制</h2><p>上述递推式涉及到2的次幂，很容易联想到二进制。如果令：</p>
+<pre><code>n (radix 10) = AmAm-1...A0 (radix 2)
+n = Am * 2^m + Am-1 * 2^m-1 + ... + A0
+</code></pre><p>那么：</p>
+<pre><code>Am = 1
+l = Am-1 * 2^m-1 + ... + A0
+
+J(n) = 2*(Am-1 * 2^m-1 + ... + A0) + 1
+     = Am-1 * 2^m + ... + A0 * 2 + 1
+     = Am-1Am-2...A0Am (radix 2)
+</code></pre><p>好了，一个很明显的规律浮现了：</p>
+<pre><code>J(n) = n对应二进制数循环左移一位
+</code></pre><p>验证一下：</p>
+<pre><code>J(10) = J(1010 (radix 2)) = 101 (radix 2) = 5
+J(15) = J(1111 (radix 2)) = 1111 (radix 2) = 15
+</code></pre><p>好了，虽然同为线性时间，但这个解比上一个解更加简洁，效率稍微高一点。</p>
+<h2 id="问题推广"><a href="#问题推广" class="headerlink" title="问题推广"></a>问题推广</h2><p>上述问题描述的是每两个人有一个人死于非命，推广成一般情形：每隔a个人有一个人死于非命。那么上述递推式的形式转换成：</p>
+<pre><code>J(1) = a
+J(2) = b
+...
+J(n-1) = c
+
+J(an) = a * J(n) + x
+...
+J(an + (a-1)) = a * J(n) + z
+</code></pre><p>我们猜测J(n)与a进制有对应的关系。将n表示为n进制数：</p>
+<pre><code>n = Am * a^m + ... + A1 * a + A0
+</code></pre><ul>
+<li>n / a 以后余数 A0，使用 J(an+A0) 与 J(n) 关系的递推式。</li>
+<li>n / a / a 以后余数 A1，使用 J(an+A1) 与 J(n) 关系的递推式。</li>
+<li>依次类推…</li>
+<li>n / a^m 以后，只剩下余数l，这时递推式结束，结果是 J(l) 对应的值。</li>
+</ul>
+<p>上述过程需要好好理解。重新整理上述过程，将它们联系起来，可以发现：</p>
+<pre><code>J(an+A0) 与 J(n) 关系的递推式常量值需乘以 3^0，J(an+A1) 与 J(n) 关系的递推式常量值需乘以 3^1，...，J(an+Am-1) 与 J(n) 关系的递推式常量值需乘以 3^m-1，J(l)需乘以 3^m。
+</code></pre><p>也就是说，除了最高位，其它位都是选择递推式的常量值，最高位选择初始值。然后相加即为结果。</p>
+<p>描述太过抽象，举个简单的例子：</p>
+<pre><code>J(1) = 4
+J(2) = 8
+J(3n) = 3J(n) - 1
+J(3n+1) = 3J(n) + 4
+J(3n+2) = 3J(n) + 5
+求J(101)
+</code></pre><p>使用上述结论：</p>
+<pre><code>J(101) = J(10202 (radix 3)) = 4*3^4 - 1*3^3 + 5*3^2 -1*3^1 + 5 = 344
+</code></pre><p>验证一下：</p>
+<pre><code>J(101) = J(3*33+2) 
+        = 3*J(33) + 5 
+        = 3*J(3*11) + 5 
+        = 3*(3*J(11) - 1) + 5 
+        = 3*(3*J(3*3+2) - 1) + 5 
+        = 3*(3*(3*J(3)+5) - 1) + 5 
+        = 3*(3*(3*(3*J(1) - 1)+5) - 1) + 5 
+        = 3*(3*(3*(3*4 - 1)+5) - 1) + 5 
+        = 344
+</code></pre><p>bingo！好了，此类递归式以后可以很容易求解了。</p>
+<h2 id="重新审视"><a href="#重新审视" class="headerlink" title="重新审视"></a>重新审视</h2><p>上述一般的规律，实际上就是对递推式求解过程的重新编码，利用进位制转换关系，简化了求解过程。显然利用递归使用原递推式编程实现是很简单的，但效率不高。</p>
+<p>一般的规律当然适用于特殊的二进制，但是我们在问题求解中得到的结论却是另一种，我们来重新审视一下：</p>
+<pre><code>n = Am*2^m +...+ A0
+</code></pre><p>利用上述规律，n展开后，当某一位为0时替换成－1，为1时不变。即：</p>
+<pre><code>n对应的二进制 － n按位取反
+</code></pre><p>也就是说，<code>n循环左移一位的值</code>和<code>n对应的二进制数</code> － <code>n按位取反后的二进制数</code>是相等的。</p>
+<p>拿J(10)验证一下：</p>
+<pre><code>1011 - 100 = 111
+1010 - 101 = 101
+...
+</code></pre><p>小小的问题中竟然隐藏着这么多的奥秘！如此简洁的解答体现出数学之美！</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>本篇文章问题推广以前部分详细描述可见其第一章，受启发于参考文献,问题推广及以后部分为自由发挥，如有问题请指正。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>Concrete Mathematics: A Fundation for Computer Science<br>  <strong><em>Ronald L. Graham, Donald E. Knuth, Oren Patashnik</em></strong></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/约瑟夫问题/" rel="tag"># 约瑟夫问题</a>
+          
+            <a href="/tags/递归/" rel="tag"># 递归</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/15/welcome/" rel="next" title="Welcome to My Blog">
+                <i class="fa fa-chevron-left"></i> Welcome to My Blog
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/20/vim-plugins/" rel="prev" title="VIM">
+                VIM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <script src="https://utteranc.es/client.js" repo="hoverwinter/hoverwinter.github.com" issue-term="pathname" label="comment" theme="github-light" crossorigin="anonymous" async>
+    </script>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Carpela</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题定义"><span class="nav-number">1.</span> <span class="nav-text">问题定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题求解"><span class="nav-number">2.</span> <span class="nav-text">问题求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递推式与进位制"><span class="nav-number">3.</span> <span class="nav-text">递推式与进位制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题推广"><span class="nav-number">4.</span> <span class="nav-text">问题推广</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新审视"><span class="nav-number">5.</span> <span class="nav-text">重新审视</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">6.</span> <span class="nav-text">后记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Carpela</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
