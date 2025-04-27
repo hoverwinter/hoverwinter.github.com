@@ -1,0 +1,85 @@
+baseURL: https://hoverwinter.github.io/
+languageCode: zh-CN
+title: Carpela's Blog
+theme: ["PaperMod"]
+
+params:
+  title: "carpela's blog" # 首页标题
+  description: "carpela's blog" # 页面描述
+  keywords: [Blog, carpela] # 首页的关键词
+  author: carpela # 文章中默认显示的作者名字
+  DateFormat: "2006-01-02" # 将时间格式修改为国内常用格式
+  ShowCodeCopyButtons: true # 显示复制代码按钮
+  showtoc: true # 在每篇文章开头显示目录
+
+  # 各种图标的地址，如果没有就全部注释掉
+  # assets:
+    # favicon: "<link / abs url>"
+    # favicon16x16: "<link / abs url>"
+    # favicon32x32: "<link / abs url>"
+    # apple_touch_icon: "<link / abs url>"
+    # safari_pinned_tab: "<link / abs url>"
+
+  # PaperMod支持Regular、Home-Info和Profile三种模式，具体参阅 https://github.com/adityatelange/hugo-PaperMod/wiki/Features#regular-mode-default-mode
+  profileMode: 
+    enabled: false # needs to be explicitly set
+    title: "Carpela's blog"
+    subtitle: "This is subtitle"
+    imageUrl: "<img location>"
+    imageWidth: 120
+    imageHeight: 120
+    imageTitle: my image
+    buttons:
+      - name: Posts
+        url: posts
+      - name: Tags
+        url: tags
+  homeInfoParams:
+    Title: "Carpela"
+    Content: 所思所想
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/hoverwinter" # 个人Github地址
+    - name: email
+      url: "mailto://hoverwinter@gmail.com" # 个人邮箱
+
+  # 用于搜索引擎验证网站所有权，如果不用就注释掉
+  # analytics: 
+    # google:
+    #   SiteVerificationTag: "XYZabc"
+    # bing:
+    #   SiteVerificationTag: "XYZabc"
+    # yandex:
+    #   SiteVerificationTag: "XYZabc"
+
+  editPost:
+    URL: "https://github.com/hoverwinter/hoverwinter.github.io/blob/main/content" # 填入Github仓库的地址
+    Text: "提交修改建议"
+    appendFilePath: true # 是否在URL后加入文件路径
+
+# 网站右上角的菜单列表
+menu:
+  main:
+    - identifier: archives # 需做额外配置，具体参考下文
+      name: 归档
+      url: /archives/
+      weight: 10
+    - identifier: categories
+      name: 分类
+      url: /categories/
+      weight: 20
+    - identifier: tags
+      name: 标签
+      url: /tags/
+      weight: 30
+    - identifier: search # 需做额外配置，具体参考下文
+      name: 搜索
+      url: /search/
+      weight: 40
+
+outputs:
+    home:
+        - HTML
+        - RSS
+        - JSON # is necessary
