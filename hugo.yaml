@@ -1,4 +1,4 @@
-baseURL: https://hoverwinter.github.io/
+baseURL: https://hoverwinter.github.com/
 languageCode: zh-CN
 title: Carpela's Blog
 theme: ["PaperMod"]
@@ -7,7 +7,7 @@ params:
   title: "carpela's blog" # 首页标题
   description: "carpela's blog" # 页面描述
   keywords: [Blog, carpela] # 首页的关键词
-  author: carpela # 文章中默认显示的作者名字
+  author: Carpela # 文章中默认显示的作者名字
   DateFormat: "2006-01-02" # 将时间格式修改为国内常用格式
   ShowCodeCopyButtons: true # 显示复制代码按钮
   showtoc: true # 在每篇文章开头显示目录
@@ -54,7 +54,7 @@ params:
     #   SiteVerificationTag: "XYZabc"
 
   editPost:
-    URL: "https://github.com/hoverwinter/hoverwinter.github.io/blob/main/content" # 填入Github仓库的地址
+    URL: "https://github.com/hoverwinter/hoverwinter.github.com/blob/main/content" # 填入Github仓库的地址
     Text: "提交修改建议"
     appendFilePath: true # 是否在URL后加入文件路径
 
